@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collaborative Notepad</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Menu Bar -->
+        <div class="menu-bar">
+            <div class="menu-item">
+                <button class="menu-button" id="fileMenuBtn">File</button>
+                <div class="dropdown-menu" id="fileMenu">
+                    <button onclick="newFile()">New</button>
+                    <button onclick="openFile()">Open</button>
+                    <button onclick="saveFile()">Save</button>
+                    <hr>
+                    <button onclick="window.close()">Exit</button>
+                </div>
+            </div>
+            <div class="menu-item">
+                <button class="menu-button" id="editMenuBtn">Edit</button>
+                <div class="dropdown-menu" id="editMenu">
+                    <button onclick="cutText()">Cut</button>
+                    <button onclick="copyText()">Copy</button>
+                    <button onclick="pasteText()">Paste</button>
+                    <button onclick="undoEdit()">Undo</button>
+                    <button onclick="redoEdit()">Redo</button>
+                </div>
+            </div>
+            <div class="menu-item">
+                <span class="filename-display" id="filenameDisplay">Untitled</span>
+            </div>
+        </div>
+
+        <!-- Editor Container -->
+        <div class="editor-wrapper">
+            <div class="line-numbers" id="lineNumbers"></div>
+            <div class="editor-container">
+                <textarea 
+                    id="textEditor" 
+                    spellcheck="false"
+                    placeholder="Start typing..."
+                ></textarea>
+            </div>
+        </div>
+
+        <!-- File Dialog Modal -->
+        <div id="fileDialog" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeFileDialog()">&times;</span>
+                <h2 id="dialogTitle">Open File</h2>
+                <div id="fileList" class="file-list"></div>
+                <div class="dialog-actions">
+                    <input type="text" id="fileNameInput" placeholder="Enter file name">
+                    <div class="button-group">
+                        <button onclick="closeFileDialog()">Cancel</button>
+                        <button id="dialogActionBtn" onclick="dialogAction()">Open</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save Dialog Modal -->
+        <div id="saveDialog" class="modal">
+            <div class="modal-content">
+                <h2>Save File</h2>
+                <input type="text" id="saveFileNameInput" placeholder="Enter file name (e.g., document.txt)">
+                <div class="dialog-actions">
+                    <button onclick="closeSaveDialog()">Cancel</button>
+                    <button onclick="confirmSave()">Save</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirm Overwrite Dialog -->
+        <div id="overwriteDialog" class="modal">
+            <div class="modal-content">
+                <h2>File Already Exists</h2>
+                <p>The file "<span id="overwriteFileName"></span>" already exists. What would you like to do?</p>
+                <div class="dialog-actions">
+                    <button onclick="closeOverwriteDialog()">Cancel</button>
+                    <button onclick="createDuplicate()">Create Duplicate</button>
+                    <button onclick="confirmOverwrite()">Overwrite</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
+
