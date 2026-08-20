@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment / secrets
+.env
+
+# Application data (user files are created at runtime)
+storage/
+_verify_storage/
+
+# OS / editor cruft
+.DS_Store
+.idea/
+.vscode/

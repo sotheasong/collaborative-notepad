@@ -360,21 +360,52 @@ async function saveCurrentFile() {
 }
 
 // Edit operations
-function cutText() {
-    textEditor.focus();
-    document.execCommand('cut');
+// Cut/Copy/Paste use the async Clipboard API (works in secure contexts,
+// including http://localhost). The legacy document.execCommand('paste')
+// is blocked by modern browsers, so we drive the textarea selection directly.
+function replaceSelection(text) {
+    const start = textEditor.selectionStart;
+    const end = textEditor.selectionEnd;
+    textEditor.setRangeText(text, start, end, 'end');
     updateLineNumbers();
 }
 
-function copyText() {
-    textEditor.focus();
-    document.execCommand('copy');
+function getSelectedText() {
+    return textEditor.value.substring(textEditor.selectionStart, textEditor.selectionEnd);
 }
 
-function pasteText() {
+async function copyText() {
     textEditor.focus();
-    document.execCommand('paste');
-    updateLineNumbers();
+    const selected = getSelectedText();
+    if (!selected) return;
+    try {
+        await navigator.clipboard.writeText(selected);
+    } catch (error) {
+        alert('Copy failed — your browser blocked clipboard access: ' + error.message);
+    }
+}
+
+async function cutText() {
+    textEditor.focus();
+    const selected = getSelectedText();
+    if (!selected) return;
+    try {
+        await navigator.clipboard.writeText(selected);
+        replaceSelection('');
+    } catch (error) {
+        alert('Cut failed — your browser blocked clipboard access: ' + error.message);
+    }
+}
+
+async function pasteText() {
+    textEditor.focus();
+    try {
+        const text = await navigator.clipboard.readText();
+        replaceSelection(text);
+    } catch (error) {
+        alert('Paste failed — your browser blocked clipboard access. ' +
+              'Use Ctrl/Cmd+V to paste directly instead.');
+    }
 }
 
 function undoEdit() {

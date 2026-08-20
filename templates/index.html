@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Collaborative Notepad</title>
-    <link rel="stylesheet" href="../static/style.css">
+    <title>Web Notepad</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="app-container">
@@ -16,8 +16,6 @@
                     <button onclick="newFile()">New</button>
                     <button onclick="openFile()">Open</button>
                     <button onclick="saveFile()">Save</button>
-                    <hr>
-                    <button onclick="window.close()">Exit</button>
                 </div>
             </div>
             <div class="menu-item">
